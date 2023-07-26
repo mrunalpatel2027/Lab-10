@@ -54,13 +54,14 @@ def handle_set_desktop():
 
 btn_set_desktop = ttk.Button(frm, text='Set as Desktop Image', command=handle_set_desktop)
 btn_set_desktop.state('disabled')
-btn_set_desktop.grid(row=1,column=0,padx=0,pady=(10,20))
+btn_set_desktop.grid(row=1, column=0, padx=0, pady=(10,20))
 
 #create list of pull down pokemon names
 pokemon_list = poke_api.get_pokemon_names()
 pokemon_list.sort()
 cbox_poke_sel = ttk.Combobox(frm, value=pokemon_list, state = 'readonly')
 cbox_poke_sel.set("Select a pokemon")
+cbox_poke_sel(row=1, column=0, padx=0, pady=10)
 
 def handle_poke_sel(event):
    global image_path
@@ -71,8 +72,16 @@ def handle_poke_sel(event):
       
       lbl_image['text'] = None
       photo['file'] = image_path
+      #
+      #
+      #
+      #
+    
+      #
+      #
+      #
 
 # TODO: Populate frames with widgets and define event handler functions
 
-
+cbox_poke_sel.bind('<<ComboboxSelected>>', handle_poke_sel)
 root.mainloop()
