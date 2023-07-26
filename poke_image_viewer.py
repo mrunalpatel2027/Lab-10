@@ -33,7 +33,7 @@ root.rowconfigure(0, weight=1)
 
 # TODO: Set the icon
 app_id = 'COMP593.PokeImageViewer'
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModeID(app_id)
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
 root.iconbitmap(os.path.join(script_dir, 'poke_ball.ico'))
 
 
@@ -44,15 +44,16 @@ frm.root.rowconfigure(0, weight=1)
 frm.grid(stic=NSEW)
 
 #create the button to set desktop bg
-def hanndle_set_desktop():
+def handle_set_desktop():
     """
     Event handler called when user clecks the "Set as Desktop Image" Button.
     Sets the desktop bg image to the current Poekman dispplay image
-    """
-  image_lib.set_desktop_background_image(image_path)
 
-btn_set_desktop = ttk.Button(frm, text='Set as Desktop Image', command=hanndle_set_desktop)
-btn_set_desktop.state('Disabled')
+    """
+    image_lib.set_desktop_background_image(image_path)
+
+btn_set_desktop = ttk.Button(frm, text='Set as Desktop Image', command=handle_set_desktop)
+btn_set_desktop.state('disabled')
 btn_set_desktop.grid(row=1,column=0,padx=0,pady=(10,20))
 
 #create list of pull down pokemon names
@@ -60,6 +61,16 @@ pokemon_list = poke_api.get_pokemon_names()
 pokemon_list.sort()
 cbox_poke_sel = ttk.Combobox(frm, value=pokemon_list, state = 'readonly')
 cbox_poke_sel.set("Select a pokemon")
+
+def handle_poke_sel(event):
+   global image_path
+
+   current_sel = cbox_poke_sel.get()
+   image_path = poke_api.download_pokemon_artwork(current_sel, images_dir)
+   if image_path:
+      
+      lbl_image['text'] = None
+      photo['file'] = image_path
 
 # TODO: Populate frames with widgets and define event handler functions
 
